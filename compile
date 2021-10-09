@@ -1,0 +1,4 @@
+#!/bin/bash
+
+g++ main.cpp server.cpp connection.cpp connection_manager.cpp mime_types.cpp reply.cpp request_handler.cpp request_parser.cpp -I./include -pthread -o main
+# x86_64-w64-mingw32-g++ -static main.cpp -I./asio-1.18.2/include -o main -pthread -lws2_32 -lwsock32
