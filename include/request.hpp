@@ -12,6 +12,7 @@ namespace server {
 struct request
 {
   std::string method;
+  std::string body;
   std::string uri;
   int http_version_major;
   int http_version_minor;

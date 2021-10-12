@@ -14,7 +14,7 @@ void request_parser::reset()
   state_ = method_start;
 }
 
-request_parser::result_type request_parser::consume(request& req, char input)
+request_parser::result_type request_parser::consume(request& req, char input, char eof)
 {
   switch (state_)
   {
@@ -266,7 +266,30 @@ request_parser::result_type request_parser::consume(request& req, char input)
       return bad;
     }
   case expecting_newline_3:
-    return (input == '\n') ? good : bad;
+    if(input == '\n'){
+      if(!req.method.compare("GET")){
+        return good;
+      }
+      else{
+	state_ = body;
+        return indeterminate;
+      }
+    }else{
+      return bad;
+    }
+  case body:
+    if(input == eof){
+      req.body.push_back(input);
+      return good;
+    }else if (!is_char(input) || is_ctl(input))
+    {
+      return bad;
+    }
+    else
+    {
+      req.body.push_back(input);
+      return indeterminate;
+    }
   default:
     return bad;
   }

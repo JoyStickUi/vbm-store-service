@@ -2,6 +2,7 @@
 #define HTTP_REQUEST_PARSER_HPP
 
 #include <tuple>
+#include <iostream>
 
 namespace http {
 namespace server {
@@ -31,7 +32,8 @@ public:
   {
     while (begin != end)
     {
-      result_type result = consume(req, *begin++);
+      std::cout << *begin;
+      result_type result = consume(req, *begin++, *(++end));
       if (result == good || result == bad)
         return std::make_tuple(result, begin);
     }
@@ -40,7 +42,7 @@ public:
 
 private:
   /// Handle the next character of input.
-  result_type consume(request& req, char input);
+  result_type consume(request& req, char input, char eof);
 
   /// Check if a byte is an HTTP character.
   static bool is_char(int c);
@@ -76,7 +78,9 @@ private:
     space_before_header_value,
     header_value,
     expecting_newline_2,
-    expecting_newline_3
+    expecting_newline_3,
+    body,
+    expecting_newline_4
   } state_;
 };
 
