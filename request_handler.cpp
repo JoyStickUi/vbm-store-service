@@ -6,8 +6,6 @@
 #include "reply.hpp"
 #include "request.hpp"
 
-#include <iostream>
-
 namespace http {
 namespace server {
 
@@ -18,8 +16,6 @@ request_handler::request_handler(const std::string& doc_root)
 
 void request_handler::handle_request(const request& req, reply& rep)
 {
-
-  std::cout << req.uri << std::endl;
   // Decode url to path.
   std::string request_path;
   if (!url_decode(req.uri, request_path))
